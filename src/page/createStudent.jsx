@@ -17,7 +17,6 @@ const CreateStudent = React.memo((props) => {
             setStudents(data)
         });
     }, [])
-    // console.log("students", students);
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {

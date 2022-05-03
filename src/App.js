@@ -9,7 +9,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/create" element={<CreateStudent />} />
-          {/* <Route path="/" element={<ManageStudentPage />} /> */}
+          <Route path="/" element={<ManageStudentPage />} />
         </Routes>
       </Router>
     </Fragment>

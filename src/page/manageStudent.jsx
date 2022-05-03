@@ -1,31 +1,34 @@
+import {db} from '../firebaseConfig'
 import React, { useEffect, useState } from 'react'
 import  {MockData}  from '../api/mockData';
 import FormComponent from '../component/form.component/form.component';
 import LayoutComponent from '../component/layout.Component/layout.Component'
 import NavComponent from '../component/nav.component/nav.component';
+import { ref,  onValue} from "firebase/database";
 import './style.scss'
 const ManageStudentPage = () => {
-  // const [students, setStudents] = useState([])
+  const [students, setStudents] = useState([])
   const data = ['toan', 'van', 'anh']
   const [subjects, setSubjects] = useState([])
   const title = 'ADMIN MANAGE STUDENT'
-  const arr = []
   useEffect(() => {
-    async function fetchData() {
-      const mockData = await MockData['subjects']
-      for(let data in mockData) {
-        arr.push(mockData[`${data}`])
-      }
-      setSubjects(arr)
-    }
-    fetchData()
+    const starCountRef = ref(db, 'students/');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            const arr = [];
+            Object.keys(data).map(item => arr.push(data[item]))
+            arr.push(data);
+            setStudents(arr)
+        });
   }, [])
 
-  console.log("subjects", subjects);
+  console.log("subjects", students);
   return (
     <LayoutComponent title={title}>
       <NavComponent subjects={subjects}/>
-      <FormComponent />
+      <div>
+        
+      </div>
         <div>
           <table>
             <thead>
