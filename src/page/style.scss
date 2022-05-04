@@ -66,3 +66,26 @@
             }
         }
     }
+    //manager-student
+    .edit, .delete {
+        padding: 10px;
+        background: #007bff;
+        border-radius: 3px;
+        border: none;
+        margin-right: .5rem;
+    }
+    .delete {
+        background: #dc3545;
+    }
+    table, th, td{
+        padding: .5rem 0;
+        border-top:1px solid #ccc;
+        border-bottom:1px solid #ccc;
+        align-items: center;
+        text-align: center;
+    }
+    table{
+        width: 100%;
+        border-collapse:collapse;
+        margin-top: 2rem;
+    }

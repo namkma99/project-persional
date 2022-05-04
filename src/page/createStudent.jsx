@@ -1,24 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import LayoutComponent from '../component/layout.Component/layout.Component'
 import {db} from '../firebaseConfig'
-import { set, ref,  onValue} from "firebase/database";
+import { set, ref,  onValue, update} from "firebase/database";
 import './style.scss'
+import { useParams, useNavigate } from 'react-router-dom';
 const CreateStudent = React.memo((props) => {
+    let params = useParams();
+    let navigate = useNavigate();
+    const titleCreate = 'CREATE STUDENT'
+    const titleEdit = 'EDIT STUDENT'
+    const [create, setCreate] = useState(false)
     const [students, setStudents] = useState({})
-    const title = 'CREATE STUDENT'
     const [fingerId, setFingerId] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const [idx, setIdx] = useState('')
     useEffect(() => {
         const starCountRef = ref(db, 'students/');
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             setStudents(data)
         });
-    }, [])
+        setIdx(params.id)
+        if(idx) {
+            const student = students[`${idx}`]
+            if(student) {
+                setCreate(false)
+                console.log("student", student);
+                setFingerId(student.fingerId)
+                setName(student.name)
+                setEmail(student.email)
+                setPhoneNumber(student?.type)
+            } else {
+                
+            }
+        }else {
+            setCreate(true)
+            setFingerId("")
+            setName("")
+            setEmail("")
+        }
+    }, [idx])
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if(create) {
+            handleCreateStudent()
+        } else {
+            handleEditPage()
+        }
+    }
+
+    const handleCreateStudent = async () => {
         try {
             const fingerIdInFirebase =  students[`${fingerId}`]
             console.log("fingerIdInFirebase", fingerIdInFirebase);
@@ -61,9 +94,29 @@ const CreateStudent = React.memo((props) => {
             console.log('error',error)
         }
     }
+
+    const handleEditPage = async () => {
+        console.log("userId", params)
+        try{
+            await update(ref(db, `/students/${fingerId}`), {
+                fingerId:fingerId,
+                name: name,
+                email: email,
+                type: phoneNumber,
+            })
+            console.log("Edit Success");
+            return navigate('/')
+        }
+        catch(e) {
+            console.log('error', e);
+        }
+    }
     
+    const handleCancel = () => {
+        return navigate('/')
+    }
     return (
-        <LayoutComponent title={title}>
+        <LayoutComponent title={create ? titleCreate : titleEdit}>
             <form onSubmit={handleSubmit}className='form'>
                 <div className='form-control'>
                     <label>FingerId</label>
@@ -82,7 +135,7 @@ const CreateStudent = React.memo((props) => {
                     <input type='text' value={phoneNumber} placeholder='Enter phone number ...' onChange={(e)=>setPhoneNumber(e.target.value)} />
                 </div>
                 <div className='button'>
-                    <button className='btn btn-outline ' type="submit" value="Submit">Cancel</button>
+                    <button className='btn btn-outline' onClick={handleCancel}>Cancel</button>
                     <button className='btn btn-primary' type="submit" value="Submit">Submit</button>
                 </div>
             </form>

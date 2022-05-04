@@ -9,6 +9,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/create" element={<CreateStudent />} />
+          <Route path="/edit/:id" element={<CreateStudent />} />
           <Route path="/" element={<ManageStudentPage />} />
         </Routes>
       </Router>
