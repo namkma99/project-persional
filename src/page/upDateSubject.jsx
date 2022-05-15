@@ -118,26 +118,7 @@ const CreateStudent = React.memo((props) => {
     return (
         <LayoutComponent title={create ? titleCreate : titleEdit}>
             <form onSubmit={handleSubmit}className='form'>
-                <div className='form-control'>
-                    <label>FingerId</label>
-                    <input type='text' disabled={create ? false : true} value={fingerId} placeholder='Enter fingerId ...' onChange={(e)=>setFingerId(e.target.value)}/>
-                </div>
-                <div className='form-control'>
-                    <label>Name</label>
-                    <input type='text' value={name} placeholder='Enter name ...' onChange={(e)=>setName(e.target.value)}/>
-                </div>
-                <div className='form-control'>
-                    <label>Email</label>
-                    <input type='text' value={email} placeholder='Enter email ...' onChange={(e)=>setEmail(e.target.value)} />
-                </div>
-                <div className='form-control'>
-                    <label>Phone Number</label>
-                    <input type='text' value={phoneNumber} placeholder='Enter phone number ...' onChange={(e)=>setPhoneNumber(e.target.value)} />
-                </div>
-                <div className='button'>
-                    <button className='btn btn-outline' onClick={handleCancel}>Cancel</button>
-                    <button className='btn btn-primary' type="submit" value="Submit">Submit</button>
-                </div>
+                
             </form>
         </LayoutComponent>
     )

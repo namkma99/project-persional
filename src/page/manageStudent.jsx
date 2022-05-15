@@ -15,6 +15,14 @@ const ManageStudentPage = () => {
   const title = 'ADMIN MANAGE STUDENT'
   const [search, setSearch] = useState('')
   useEffect(() => {
+    const starCountRef = ref(db, 'subjects/');
+          onValue(starCountRef, (snapshot) => {
+              const data = snapshot.val();
+              console.log("data", data)
+              const arr = [];
+              Object.keys(data).map(item => arr.push(data[item]))
+              setSubjects(arr)
+          });
     if(!search) {
       const starCountRef = ref(db, 'students/');
           onValue(starCountRef, (snapshot) => {
@@ -29,19 +37,35 @@ const ManageStudentPage = () => {
       setStudents(searchItem)
     }
   }, [search])
-
+  console.log("subjects", subjects)
   const handleDelete = async (id) => {
     await remove(ref(db, `/students/${id}`))
-    console.log("iddd", students)
+    console.log("iddd", id)
   }
 
   const handleSearchForm = (searchItem) => {
     setSearch(searchItem)
   }
 
+  const onSendMessage = ()=> {
+    const payload = {
+      to: '+84373690243',
+      body: "Sinh viên: " + 'Hello ae'
+    }
+    fetch('http://localhost:4000/api/messages', {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*",
+      },
+      
+      body: JSON.stringify(payload)
+      })
+  }
+
   return (
     <LayoutComponent title={title}>
-      <NavComponent subjects={subjects}/>
+      {/* <NavComponent subjects={subjects}/> */}
       <div>
         <SearchComponent placeholder={"search to student"} handleSearchForm={handleSearchForm}/>
       </div>

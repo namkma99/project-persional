@@ -88,4 +88,8 @@
         width: 100%;
         border-collapse:collapse;
         margin-top: 2rem;
+        .tbody {
+            overflow-y: auto;
+            height: 100%;
+        }
     }
