@@ -15,10 +15,11 @@ const ManageStudentPage = () => {
   const title = 'ADMIN MANAGE STUDENT'
   const [search, setSearch] = useState('')
   useEffect(() => {
+    update()
+    // onSendMessage()
     const starCountRef = ref(db, 'subjects/');
           onValue(starCountRef, (snapshot) => {
               const data = snapshot.val();
-              console.log("data", data)
               const arr = [];
               Object.keys(data).map(item => arr.push(data[item]))
               setSubjects(arr)
@@ -27,7 +28,6 @@ const ManageStudentPage = () => {
       const starCountRef = ref(db, 'students/');
           onValue(starCountRef, (snapshot) => {
               const data = snapshot.val();
-              console.log("data", data)
               const arr = [];
               Object.keys(data).map(item => arr.push(data[item]))
               setStudents(arr)
@@ -37,7 +37,7 @@ const ManageStudentPage = () => {
       setStudents(searchItem)
     }
   }, [search])
-  console.log("subjects", subjects)
+  console.log("subjects", students)
   const handleDelete = async (id) => {
     await remove(ref(db, `/students/${id}`))
     console.log("iddd", id)
@@ -47,20 +47,40 @@ const ManageStudentPage = () => {
     setSearch(searchItem)
   }
 
-  const onSendMessage = ()=> {
+  const onSendMessage = (name)=> {
     const payload = {
       to: '+84373690243',
-      body: "Sinh viên: " + 'Hello ae'
+      body: "Sinh viên: " + `${name}` + ' cảnh báo nghỉ đến số buổi cho phép!'
     }
+    const checkSendSms = subjects.find(sub => sub.sendSms)
+    // if(checkSendSms) {
+    //   fetch('http://localhost:4000/api/messages', {
+    //     method: 'POST',
+    //     headers: {
+    //     'Content-Type': 'application/json',
+    //     "Access-Control-Allow-Origin": "*",
+    //     },
+        
+    //     body: JSON.stringify(payload)
+    //     })
+    // }
     fetch('http://localhost:4000/api/messages', {
-      method: 'POST',
-      headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": "*",
-      },
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        },
+        
+        body: JSON.stringify(payload)
+        })
+  }
+
+  const update = async () => {
+    // eslint-disable-next-line array-callback-return
+    subjects.map(sub => {
       
-      body: JSON.stringify(payload)
-      })
+      console.log("subject", sub.checkInTime)
+    })
   }
 
   return (
@@ -76,8 +96,9 @@ const ManageStudentPage = () => {
             <tr>
               <th width='10%'>STT</th>
               <th width='20%'>Name</th>
-              <th width='20%'>Email</th>
-              <th width='20%'>Phone</th>
+              <th width='10%'>FingerId</th>
+              <th width='15%'>Email</th>
+              <th width='15%'>Phone</th>
               <th width='30%'>Action</th>
             </tr>
           </thead>
@@ -88,15 +109,19 @@ const ManageStudentPage = () => {
                 <td width='20%'>
                 {item.name}
                 </td>
+                <td width='10%'>
+                {item.fingerId}
+                </td>
                 <td width='20%'>
                 {item.email}
                 </td>
-                <td width='20%'>
+                <td width='10%'>
                 {item.type}
                 </td>
                 <td width='30%'>
                   <Link className='edit' to={`edit/${item.fingerId}`}><i className="fa-solid fa-pen"></i></Link>
                   <button className='delete' onClick={()=>handleDelete(item.fingerId)}><i className="fa-solid fa-trash"></i></button>
+                  <button className='delete' onClick={()=>onSendMessage(item.name)}>Send Sms</button>
                 </td>
               </tr>
             ))}

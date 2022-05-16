@@ -39,5 +39,22 @@
             top: 10px;
         }
     }
-    
+    .sidebar-link {
+        .wapper {
+            align-items: flex-end;
+            .link-item {
+                text-decoration: none;
+                cursor: pointer;
+                list-style: none;
+                padding: 1rem 1rem;
+                background: #cdcdcd;
+                display: flex;
+                border-bottom: 1px solid #555555;
+                &:hover, &:active {
+                    background: #fefefe;
+                    opacity: .8;
+                }
+            }
+        }
+    }
 }

@@ -93,3 +93,19 @@
             height: 100%;
         }
     }
+
+    .btn-export {
+        padding: 0.5rem 1rem;
+        color: #ffffff;
+        background-color: #28a745;
+        border: none;
+        margin-top: 10px;
+        flex-grow: 1;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        cursor: pointer;
+        &:active {
+            color: #a8a8a8;
+        }
+    }

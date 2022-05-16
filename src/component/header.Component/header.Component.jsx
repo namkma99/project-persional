@@ -13,7 +13,7 @@ const HeaderComponent = (props) => {
   return (
     <div className="header">
       <div onClick={openSidebar} className="header-arrowIcon">
-      <i className="fa-solid fa-bars"></i>
+      <i className="fa-solid fa-bars icon-bar"></i>
         </div>
       <h2>{props.title}</h2>
     </div>

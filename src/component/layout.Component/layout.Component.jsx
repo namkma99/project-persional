@@ -7,14 +7,9 @@ function LayoutComponent(props){
   const openSidebar = (open) => {
     setIsOpen(open)
   }
-  useEffect(() => {
-    console.log("isOpen",isOpen);
-  }, [isOpen])
+  
   return (
     <div className='main'>
-          {/* <div className={'main-sideBar'}>
-          <SidebarComponent isOpen={isOpen} openSidebar1={openSidebar}/>
-        </div>   */}
         {isOpen ? <div className={'main-sideBar'}>
           <SidebarComponent isOpen={isOpen} openSidebar1={openSidebar}/>
         </div> : ''}
@@ -27,9 +22,6 @@ function LayoutComponent(props){
               {props.children}
             </div>
           </div>
-          {/* <div className="footer">
-            <FooterComponent />
-          </div> */}
         </div>
         {isOpen ? <div className="modal" onClick={()=>setIsOpen(!isOpen)}>MODAL</div> : ''}
         
