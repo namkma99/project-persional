@@ -8,9 +8,12 @@ const CheckinTime = (props) => {
     const [subjects, setSubjects] = useState([])
     const [student, setStudents] = useState([])
     const [checkInTime, setCheckInTime] = useState([])
-    const [value, setValue] = useState(1)
+    const [valueOption, setValueOption] = useState(1)
     // const [checkInValue,]
-  useEffect(() => {
+    useEffect(() => {
+      const idx = window.location.pathname.split('/').pop()
+      setValueOption(idx)
+      console.log("props", idx)
     const starCountRef = ref(db, 'subjects/');
     onValue(starCountRef, (snapshot) => {
         const data = snapshot.val();
@@ -29,30 +32,31 @@ const CheckinTime = (props) => {
   
   useEffect( () => {
     if(subjects) {
-        const arr = subjects && subjects.filter(item => item.id === Number(value))
+        const arr = subjects && subjects.filter(item => item.id === Number(valueOption))
         setCheckInTime(arr)
     }
-  }, [subjects, value])
+  }, [subjects, valueOption])
 const listCheckIn = checkInTime[0]?.checkInTime 
-  //   console.log("listCheckIn", listCheckIn.map(item => item[1]));
   console.log("subject", subjects)
   const handleChangeSelected = (val) => {
-        setValue(val)
+    setValueOption(val)
     }
     console.log("listSubject", listCheckIn);
   return (
     <LayoutComponent>
         <div>
-            <select defaultValue={1} onChange={(e) => handleChangeSelected(e.target.value)}>
+            <select defaultValue={valueOption} onChange={(e) => handleChangeSelected(e.target.value)}>
                 <option value={1}>Toan</option>
                 <option value={2}>Van</option>
                 <option value={3}>Anh</option>
+                <option value={6}>Ly</option>
             </select>
         <table className='table' id='emp-table'> 
           <thead className='thead'>
               <tr>
                   <th></th>
                   <th>FingerId</th>
+                  <th>Name</th>
                   {listCheckIn && Object.entries(listCheckIn).map((v,k) => (
                       <th key={k}>{v[0]}</th>
                   ))}
@@ -63,8 +67,9 @@ const listCheckIn = checkInTime[0]?.checkInTime
             <tr key={key}>
                 <td>{key}</td>
                 <td>{value.fingerId}</td>
+                <td>{value.name}</td>
                 {listCheckIn && Object.entries(listCheckIn).map((v,k) => (
-                     <td key={v[1][value.fingerId]}>{v[1][value.fingerId] ? v[1][value.fingerId] : 'x'}</td>
+                     <td key={v[0][value.fingerId] + v}>{v[1][value.fingerId] ? v[1][value.fingerId] : 'x'}</td>
                 ))}
             </tr>
             ))}

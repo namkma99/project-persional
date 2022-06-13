@@ -65,7 +65,9 @@ const CreateStudent = React.memo((props) => {
                     ...data,
                     fingerId:fingerId
                 });
-                const response = await fetch('http://192.168.41.33/setRoom', {
+                const urlHome = 'http://192.168.41.33/setRoom'
+                const myPhone = 'http://172.20.10.2/setRoom'
+                const response = await fetch(myPhone, {
                     method: 'POST',
                     headers: {
                         "Access-Control-Allow-Origin": "*",
@@ -74,6 +76,7 @@ const CreateStudent = React.memo((props) => {
                     body: JSON.stringify({
                         id: parseInt(fingerId),
                         name: name,
+                        email: email,
                         type: phoneNumber
                     })
                 })
@@ -81,14 +84,19 @@ const CreateStudent = React.memo((props) => {
                     ...data,
                     fingerId:fingerId,
                 })
+                .then(() => {
+                    alert('Create Student Success!')
+                })
                 setFingerId('')
                 setName('')
                 setEmail('')
                 setPhoneNumber('')
                 console.log("Create Success");
+                alert(`sinh viên: ${name} đã được thêm thành công`)
                 return response;
             } else {
                 console.log('error')
+                alert(`created failed !`)
             }
         } catch (error) {
             console.log('error',error)

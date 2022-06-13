@@ -20,10 +20,10 @@ const ManageClassPage = () => {
   const listSubject = subjects.filter(item => item.id)
   const checkinTime = (item) => {
     // eslint-disable-next-line no-restricted-globals
-    location.href = '/checkin'
+    location.href = `/checkin/${item.id}`
   }
   return (
-    <LayoutComponent>
+    <LayoutComponent title="Manage Class">
         <div>
         <table className='table'> 
           <thead className='thead'>

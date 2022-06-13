@@ -10,7 +10,7 @@ function App() {
     <Fragment>
       <Router>
         <Routes>
-          <Route path="/checkin" element={<CheckinTime />} />
+          <Route path="/checkin/:id" element={<CheckinTime />} />
           <Route path="/class" element={<ManageClassPage />} />
           <Route path="/create" element={<CreateStudent />} />
           <Route path="/edit/:id" element={<CreateStudent />} />

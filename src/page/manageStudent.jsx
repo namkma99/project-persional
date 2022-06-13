@@ -12,6 +12,7 @@ const ManageStudentPage = () => {
   const [students, setStudents] = useState([])
   const data = ['toan', 'van', 'anh']
   const [subjects, setSubjects] = useState([])
+  const [students2, setStudents2] = useState(students)
   const title = 'ADMIN MANAGE STUDENT'
   const [search, setSearch] = useState('')
   useEffect(() => {
@@ -33,10 +34,16 @@ const ManageStudentPage = () => {
               setStudents(arr)
           });
     } else {
-      const searchItem = students.filter(item => (item.name.toLowerCase() === search.toLowerCase()))
-      setStudents(searchItem)
+      const searchItem = students.filter(item => {
+        const name = item.name.split(' ')[0]
+        return name.toString().toLowerCase() === search.toString().toLowerCase()
+      })
+      setStudents2(searchItem)
     }
   }, [search])
+  useEffect(()=> {
+    setStudents2(students)
+  }, [students])
   console.log("subjects", students)
   const handleDelete = async (id) => {
     await remove(ref(db, `/students/${id}`))
@@ -72,6 +79,9 @@ const ManageStudentPage = () => {
         },
         
         body: JSON.stringify(payload)
+        }).then(() => {
+          alert('Send SMS Success!')
+          console.log("success")
         })
   }
 
@@ -103,7 +113,7 @@ const ManageStudentPage = () => {
             </tr>
           </thead>
           <tbody className='tbody'>
-            {students && students.map((item, index) => (
+            {students2 && students2.map((item, index) => (
               <tr key={index}>
                 <td width='10%'>{index + 1}</td>
                 <td width='20%'>
